@@ -62,6 +62,15 @@ int _unsetenv(char *key);
 void Auxenv(char **arr, unsigned int *statusOut);
 void Auxunenv(char **arr, unsigned int *statusOut);
 
+/* These are in changedir.c */
+int cdCustomCmmd(int found, char *buffer, char **arr,
+char **argv, unsigned int *statusOut, int counter);
+void execCd(char **arr, int counter, char **argv,
+unsigned int *statusOut, int chRet);
+void writeCdError(char **arr, int counter, char **argv);
+void writeOptErr(char **arr, int counter, char **argv);
+void execCdPrev(char **arr, int counter, char **argv, unsigned int *statusOut);
+
 /* These are in minishell.c */
 char **command(char *buf);
 void writedol(void);
