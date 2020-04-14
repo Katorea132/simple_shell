@@ -89,6 +89,8 @@ int main(int ac __attribute__((unused)), char **argv)
 		neobuf = Commentator(getty, buffer);
 		found =  customCmmExec(getty, neobuf, arr, chkVal, counter,
 		argv, &statusOut);
+		found = cdCustomCmmd(found, neobuf, arr, argv,
+		&statusOut, counter);
 		commandExec(getty, neobuf, arr, argv, found, counter, &statusOut);
 		free(neobuf);
 		neobuf = 0;
