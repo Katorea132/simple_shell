@@ -28,7 +28,7 @@ int _setenv(char *key, char *value, int overwrite)
 	char *toFree, **toHold, *toUnite;
 	int i;
 
-	if (key == 0 || _strlenS(key) == 0)
+	if (key == 0 || _strlenS(key) == 0 || value == 0)
 	{
 		write(STDERR_FILENO, "Name is invalid\n", 16);
 		return (-1);
