@@ -64,15 +64,7 @@ int chRet)
 	}
 	else if (arr[1] != 0 && arr[1][0] == '-' && arr[1][1] == 0)
 	{
-		toFree = _getenv("OLDPWD"), chRet = chdir(toFree);
-		if (chRet == 0)
-		{
-			toSet = _getenv("PWD"), _setenv("OLDPWD", toSet, 1), free(toSet);
-			_setenv("PWD", toFree, 1), *statusOut = 0;
-		}
-		else if (chRet == -1)
-			writeCdError(arr, counter, argv), *statusOut = 2;
-		free(toFree);
+		execCdPrev(arr, counter, argv, statusOut);
 	}
 	else if (arr[1] != 0 && arr[1][0] == '-' && arr[1][1] != 0)
 		writeOptErr(arr, counter, argv), *statusOut = 2;
@@ -117,4 +109,32 @@ void writeOptErr(char **arr, int counter, char **argv)
 	write(STDERR_FILENO, arr[1], 2);
 	write(STDERR_FILENO, "\n", 1);
 	free(number);
+}
+/**
+ * execCdPrev - Changes directory
+ * @arr: Holds the arguments
+ * @counter: Holds the line counter
+ * @argv: Holds the arguments to main
+ * @statusOut: Holds the exit status
+ * Return: none
+ */
+void execCdPrev(char **arr, int counter, char **argv, unsigned int *statusOut)
+{
+	char *toFree, *toSet;
+	int chRet;
+
+	toFree = _getenv("OLDPWD");
+	if (toFree == 0)
+		toFree = _getenv("PWD");
+	chRet = chdir(toFree);
+	if (chRet == 0)
+	{
+		write(1, toFree, _strlenS(toFree));
+		write(1, "\n", 1);
+		toSet = _getenv("PWD"), _setenv("OLDPWD", toSet, 1), free(toSet);
+		_setenv("PWD", toFree, 1), *statusOut = 0;
+	}
+	else if (chRet == -1)
+		writeCdError(arr, counter, argv), *statusOut = 2;
+	free(toFree);
 }
