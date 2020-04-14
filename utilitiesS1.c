@@ -97,7 +97,7 @@ char *_getenv(const char *name)
 		copy = _strdupS(environ[i]);
 		name_env = strtok(copy, "=");
 
-		if (_strcmpS((char *)name, name_env) == 0)
+		if (_strcmpS(name_env, (char *)name) == 0)
 		{
 			val = strtok(NULL, "=");
 			sender = _strdupS(val);
