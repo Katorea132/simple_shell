@@ -41,7 +41,13 @@ int chRet)
 
 	if (arr[1] == 0)
 	{
-		toFree = _getenv("HOME"), chRet = chdir(toFree);
+		toFree = _getenv("HOME");
+		if (toFree == 0)
+		{
+			*statusOut = 0;
+			return;
+		}
+		chRet = chdir(toFree);
 		if (chRet == 0)
 		{
 			toSet = _getenv("PWD"), _setenv("OLDPWD", toSet, 1), free(toSet);
