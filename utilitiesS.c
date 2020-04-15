@@ -71,24 +71,24 @@ int found, int counter, unsigned int *statusOut)
 		dupHold = _strdupS(arr[0]);
 		if (dupHold[0] != '/')
 			checkPATH(&dupHold, &buf);
-		if (stat(dupHold, &buf) == 0 && buf.st_mode & S_IXUSR)
+		if (dupHold[0] == '/' || (dupHold[0] == '.' && dupHold[1] == '/'))
 		{
-			piddy = fork();
-			if (piddy == 0)
-				execve(dupHold, arr, environ);
-			else
+			if (stat(dupHold, &buf) == 0 && buf.st_mode & S_IXUSR)
 			{
-				wait(&status);
-				if (status != 0)
-					*statusOut = 2;
+				piddy = fork();
+				if (piddy == 0)
+					execve(dupHold, arr, environ);
 				else
-					*statusOut = 0;
+				{
+					wait(&status);
+					*statusOut = WEXITSTATUS(status);
+				}
 			}
-		}
-		else if (stat(dupHold, &buf) == 0 && !(buf.st_mode & S_IXUSR))
-		{
-			writeErrPerm(argv[0], arr[0], counter);
-			*statusOut = 126;
+			else if (stat(dupHold, &buf) == 0 && !(buf.st_mode & S_IXUSR))
+			{
+				writeErrPerm(argv[0], arr[0], counter);
+				*statusOut = 126;
+			}
 		}
 		else
 		{
