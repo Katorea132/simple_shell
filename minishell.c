@@ -87,6 +87,8 @@ int main(int ac __attribute__((unused)), char **argv)
 		chkVal = dotChecker(buffer, getty, chkVal, argv, counter, &statusOut);
 		chkVal = slsChecker(buffer, getty, chkVal, argv, counter, &statusOut);
 		neobuf = Commentator(getty, buffer);
+		if (neobuf == 0)
+			chkVal = 1;
 		found =  customCmmExec(getty, neobuf, arr, chkVal, counter,
 		argv, &statusOut);
 		found = cdCustomCmmd(found, neobuf, arr, argv,
