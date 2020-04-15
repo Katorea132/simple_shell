@@ -9,20 +9,20 @@ void echoinator(char **arr, unsigned int *statusOut)
 {
 	unsigned int i;
 
-	for (i = 1; arr[i]; i++)
+	for (i = 0; arr[i]; i++)
 	{
-		if (_strcmpS(arr[i], "$$") == 0)
+		if (_strcmpS("$$", arr[i]) == 0)
 		{
 			free(arr[i]);
 			arr[i] = intToStr(getpid());
 		}
-		else if (_strcmpS(arr[i], "$?") == 0)
+		else if (_strcmpS("$?", arr[i]) == 0)
 		{
 			free(arr[i]);
 			arr[i] = intToStr(*statusOut);
 		}
 		else if (arr[i][0] == '$' &&
-		(arr[i][1] != '$' || arr[i][1] != '?'))
+		(arr[i][1] != '$' || arr[i][1] != '?') && arr[i][1] != 0)
 		{
 			decomposer(arr, i);
 		}
