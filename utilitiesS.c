@@ -64,7 +64,7 @@ int found, int counter, unsigned int *statusOut)
 	char *dupHold;
 	int status;
 
-	if (getty != -1 && buffer[0] != '\n' && found == 0)
+	if (getty != -1 && found == 0)
 	{
 		arr = command(buffer);
 		echoinator(arr, statusOut);

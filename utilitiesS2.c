@@ -23,16 +23,17 @@ char *Commentator(int getty, char *buffer)
 	char *neobuf;
 	int i, j;
 
-	if (getty != -1)
+	if (getty != -1 && buffer[0] != '#')
 	{
-		for (i = 0; buffer[i] != '#' && buffer[i] != 0; i++)
-			;
-		neobuf = malloc(sizeof(char) * (i + 1));
-		if (!neobuf)
+		for (i = 0; buffer[i] != 0; i++)
 		{
-			perror("Failed to allocate memory at Commentator");
-			return (0);
+			if (buffer[i] == '#')
+				if (buffer[i - 1] == ' ')
+					break;
 		}
+		neobuf = malloc(sizeof(char) * (i + 1));
+		if (neobuf == 0)
+			exit(1);
 		for (j = 0; j < i; j++)
 			neobuf[j] = buffer[j];
 		neobuf[j] = 0;
