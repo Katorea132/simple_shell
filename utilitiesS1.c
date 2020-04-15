@@ -51,7 +51,7 @@ void checkPATH(char **arr, struct stat *buf)
 		if (pathonized[0] == ':' &&
 		stat(conpollo, buf) == 0 && buf->st_mode & S_IXUSR)
 		{
-			arr[0] = _strdupS(conpollo);
+			arr[0] = str_concatS("./", conpollo);
 			free(pathonized), free(conpollo);
 			return;
 		}
