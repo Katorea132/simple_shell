@@ -71,7 +71,8 @@ int found, int counter, unsigned int *statusOut)
 		dupHold = _strdupS(arr[0]);
 		if (dupHold[0] != '/')
 			checkPATH(&dupHold, &buf);
-		if (dupHold[0] == '/' || (dupHold[0] == '.' && dupHold[1] == '/'))
+		if (dupHold[0] == '/' || (dupHold[0] == '.' && dupHold[1] == '/')
+		|| (dupHold[0] == '.' && dupHold[1] == '.' && dupHold[2] == '/'))
 		{
 			if (stat(dupHold, &buf) == 0 && buf.st_mode & S_IXUSR)
 			{
@@ -79,22 +80,15 @@ int found, int counter, unsigned int *statusOut)
 				if (piddy == 0)
 					execve(dupHold, arr, environ);
 				else
-				{
-					wait(&status);
-					*statusOut = WEXITSTATUS(status);
-				}
+					wait(&status), *statusOut = WEXITSTATUS(status);
 			}
 			else if (stat(dupHold, &buf) == 0 && !(buf.st_mode & S_IXUSR))
-			{
-				writeErrPerm(argv[0], arr[0], counter);
-				*statusOut = 126;
-			}
+				writeErrPerm(argv[0], arr[0], counter), *statusOut = 126;
+			else
+				writeErr(argv[0], arr[0], counter), *statusOut = 127;
 		}
 		else
-		{
-			writeErr(argv[0], arr[0], counter);
-			*statusOut = 127;
-		}
+			writeErr(argv[0], arr[0], counter), *statusOut = 127;
 		WilliamWallace(arr);
 		free(dupHold);
 	}
