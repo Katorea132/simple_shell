@@ -1,30 +1,75 @@
-.TH HSH 1 "01 April 2020" "1" "Simple Shell man page"
+.\" Manpage for Simple Shell.
+.TH man 1 "Apr 01 2020" "1.0" "Simple Shell Man Page"
 .SH NAME
-.B hsh
-- A simple UNIX command interpreter.
+simple_shell is an sh-compatible command language interpreter that executes commands from the stand input or from a file.
 .SH SYNOPSIS
-.B ./hsh
+<command> <argument 1> <argument 2>
+
 .SH DESCRIPTION
-This program is a simple shell that has been made by the Holberton guidelines.
+The simple shell is an interactive user interface with an operating system. It takes commands from the user and executes them.
+
 .SS Overview
-This shell is an executable that reads lines from the prompt, interprets them, and generally executes other commands. It runs by compiling all .c files in the repository to create an executable
+The simple_shell is a program that reads lines from the terminal, interprets them, and executes other commands.
+For compiling the program execute gcc -Wall -Werror -Wextra -pedantic *.c -o hsh and run the executable file, like this: ./hsh. 
+It has many features to interactive use and non-interactive use (shell scripts). Commands can be typed directly to the running shell or can be exceuted from a file
+
+.SS Simple Commands
+    If a simple command has been recognized, the shell performs the following actions:
+
+    1.   The first words of the form “name=value” are splitted and assigned to the environment.
+    2.   Then, the first remaining word is considered the command name and the command is located. The other words are considered the arguments of the command.
+
+.SS Search and Execution
+     The commands will be search in this order: shell functions, builtin commands, and normal programs.
+     
+     Builtins executes internally to the shell. If the command doesn't match a function or builtin, the command is searched for as a normal program in the file
+     system. Once a normal program is executed, the shell pass the arguments and the environment to the program. If is a executable file the shell will interpret 
+     the program in a subshell. 
+
 .SS Path Search
-When locating a command, this shell first looks to see if it has an executable by that name in the PATH of env. Then it looks for builtin commands by that name.
+     If a builtin command is not found as emncioned before, could happen one of the hext options:
 
-.SH MODES
+     1.  If containg a slash, the program executes whiouth searches
 
-EXAMPLE:
+     2.  Searches each entry in PATH: PATH variable is a serie of entries separated by colons. Each one represents a directory.
 
-Non-interactive mode
+.SS Command Exit Status
+     Usually, a command exits with zero for success, and nonzero for error.
 
-.SH BUILT-IN COMMANDS
-.B env
-- prints environment
-.B exit
-- exits the shell
+.SS Variables and Parameters
+     The shell, has an enviroment, and in it has a set of parameters and variables. New variables can be set using the form
 
-.SH SEE ALSO
-.I
+           name=value
+
+.SS Builtins
+This section lists the builtin commands which are builtin because they need to perform some operation that can't be performed by a separate process.
+
+.B cd [-LP] [directory]
+     Switch to the specified directory (default HOME). 
+
+.B env  [-] [NAME=VALUE]... [COMMAND [ARG]...]
+     Prints out the current environment.
+
+.B exit [exitstatus]
+     Terminate the shell process.  
+
+.B setenv [VARIABLE] [VALUE]
+     The setenv() adds the variable name to the environment with the value "VALUE".
+
+.B unsetenv [VARIABLE]
+     The unsetenv() deletes the variable name from the environment. 
+
+.SH EXIT STATUS
+     Errors that are detected by the shell, such as a syntax error, will cause the shell to exit with a non-zero exit status. 
+
+.SH ENVIRONMENT
+     HOME       Set automatically by login from the user's.
+     PATH       The default search path for executables.
+     PWD        The logical value of the current working directory.
+     OLDPWD     The previous logical value of the current working directory.
+
 .SH BUGS
 No known bugs.
-.SH AUTHOR
+
+.SH AUTHORS
+Sebastian Escobar -1575@holbertonschool.com- and Valeria Alvarez - 1553@holbertonschool.com
